@@ -1,5 +1,5 @@
 # GMS
-> Texture extraction from Game Maker Studio data.win
+> Audio & Texture extraction from Game Maker Studio data.win
 
 ## Other Tools
 * [GM Editor](https://sourceforge.net/projects/game-maker-editor/)

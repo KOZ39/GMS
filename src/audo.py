@@ -1,29 +1,32 @@
 import pathlib
 import time
 
-DIR = 'TXTR'
+DIR = 'AUDO'
 
 begin = time.time()
 
 with open('data.win', mode='rb') as f:
     d = f.read()
 
-idx = 0 #d.find(b'TXTR')
+idx = d.find(b'AUDO')
 cnt = 0
 
 pathlib.Path(f'{DIR}').mkdir(parents=True, exist_ok=True)
 
-while d[idx:idx+4] != b'AUDO':
-    if d[idx:idx+16] == b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR':
-        p = idx
-        idx += 16
+while idx != len(d):
+    if d[idx:idx+7] == b'WAVEfmt':
+        p = idx - 8
+        idx += 7
         cnt += 1
 
-        while d[idx:idx+8] != b'IEND\xaeB`\x82':
-            idx += 1
-        idx += 8
+        while idx != len(d):
+            if d[idx:idx+7] == b'WAVEfmt':
+                idx -= 8
+                break
 
-        with open(f'{DIR}/{str(cnt).zfill(4)}.png', mode='wb') as f:
+            idx += 1
+
+        with open(f'{DIR}/{str(cnt).zfill(4)}.wav', mode='wb') as f:
             f.write(d[p:idx])
     else:
         idx += 1
