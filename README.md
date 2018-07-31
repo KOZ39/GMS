@@ -4,7 +4,7 @@
 ## Other Tools
 * [GM Editor](https://sourceforge.net/projects/game-maker-editor/)
 * [GMExtract](https://github.com/puggsoy/GMExtract)
-* [gmspack](https://github.com/ryohey/gmspack)
+* [HxD](https://mh-nexus.de/en/hxd/)
 
 ## License
 [MIT](https://github.com/KOZ39/GMS/blob/master/LICENSE)
