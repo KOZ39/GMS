@@ -23,7 +23,7 @@ while True:
     cnt += 1
     
     v1 = begin - 8
-    v2 = None if end == -1 else end
+    v2 = None if end == -1 else end - 8
 
     with open(f'{DIR}/{str(cnt).zfill(4)}.wav', mode='wb') as f:
         f.write(d[v1:v2])
