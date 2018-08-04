@@ -7,7 +7,7 @@ begin = 0
 end = 0
 cnt = 0
 
-with open('data.win', mode='rb') as f:
+with open('data.win', 'rb') as f:
     d = f.read()
 
 pathlib.Path(f'{DIR}').mkdir(parents=True, exist_ok=True)
@@ -22,5 +22,5 @@ while True:
 
     cnt += 1
 
-    with open(f'{DIR}/{str(cnt).zfill(4)}.png', mode='wb') as f:
+    with open(f'{DIR}/{str(cnt).zfill(4)}.png', 'wb') as f:
         f.write(d[begin:end])
