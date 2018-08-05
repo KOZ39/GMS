@@ -1,5 +1,4 @@
-import pathlib
-import time
+from pathlib import Path
 
 DIR = 'png'
 
@@ -10,7 +9,7 @@ cnt = 0
 with open('data.win', 'rb') as f:
     d = f.read()
 
-pathlib.Path(f'{DIR}').mkdir(parents=True, exist_ok=True)
+Path(DIR).mkdir(parents=True, exist_ok=True)
 
 while True:
     begin = d.find(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR', end + 1)
