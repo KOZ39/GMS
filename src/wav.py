@@ -41,7 +41,7 @@ while True:
     v2 = None if end == -1 else end - 8
 
     if wavNames:
-        with open(f'{DIR}/{wavNames[cnt].decode("utf-8")}', 'wb') as f:
+        with open(f'{DIR}/{wavNames[cnt].decode()}', 'wb') as f:
             f.write(d[v1:v2])
     else:
         with open(f'{DIR}/{str(cnt).zfill(4)}.wav', 'wb') as f:
