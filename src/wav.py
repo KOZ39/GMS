@@ -1,48 +1,47 @@
+import os
+import sys
 from pathlib import Path
 
-DIR = 'wav'
+del sys.argv[0]
 
-begin = 0
-end = 0
-cnt = 0
+if len(sys.argv) > 0:
+    for argv in sys.argv:
+        if os.path.isfile(argv):
+            with open(argv, 'rb') as f:
+                data = f.read()
 
-wavNames = []
+            dir = os.path.join(os.path.dirname(argv), os.path.basename(argv).split('.')[0])
 
-with open('data.win', 'rb') as f:
-    d = f.read()
+            Path(dir).mkdir(parents=True, exist_ok=True)
 
-Path(DIR).mkdir(parents=True, exist_ok=True)
+            start = stop = cnt = 0
 
-while True:
-    end = d.find(b'.wav', end + 1)
-    
-    if end == -1:
-        end = 0
-        break
+            wavNames = []
 
-    begin = d.rfind(b'\x00', 0, end)
+            while True:
+                stop = data.find(b'.wav', stop + 1)
+                
+                if stop == -1:
+                    stop = 0
+                    break
 
-    v1 = begin + 1
-    v2 = end + 4
+                start = data.rfind(b'\x00', 0, stop)
 
-    wavNames.append(d[v1:v2])
+                wavNames.append(data[start+1:stop+4])
 
-while True:
-    begin = d.find(b'WAVEfmt', end)
+            while stop != len(data):
+                start = data.find(b'RIFF', stop)
 
-    if begin == -1:
-        break
+                stop = data.find(b'RIFF', start + 1)
 
-    end = d.find(b'WAVEfmt', begin + 1)
+                if stop == -1:
+                    stop = len(data)
 
-    cnt += 1
-    
-    v1 = begin - 8
-    v2 = None if end == -1 else end - 8
+                cnt += 1
 
-    if wavNames:
-        with open(f'{DIR}/{wavNames[cnt].decode()}', 'wb') as f:
-            f.write(d[v1:v2])
-    else:
-        with open(f'{DIR}/{str(cnt).zfill(4)}.wav', 'wb') as f:
-            f.write(d[v1:v2])
+                if wavNames:
+                    with open(f'{dir}/{wavNames[cnt].decode()}', 'wb') as f:
+                        f.write(data[start:stop])
+                else:
+                    with open(f'{dir}/{str(cnt).zfill(4)}.wav', 'wb') as f:
+                        f.write(data[start:stop])

@@ -1,25 +1,30 @@
+import os
+import sys
 from pathlib import Path
 
-DIR = 'png'
+del sys.argv[0]
 
-begin = 0
-end = 0
-cnt = 0
+if len(sys.argv) > 0:
+    for argv in sys.argv:
+        if os.path.isfile(argv):
+            with open(argv, 'rb') as f:
+                data = f.read()
 
-with open('data.win', 'rb') as f:
-    d = f.read()
+            dir = os.path.join(os.path.dirname(argv), os.path.basename(argv).split('.')[0])
 
-Path(DIR).mkdir(parents=True, exist_ok=True)
+            Path(dir).mkdir(parents=True, exist_ok=True)
 
-while True:
-    begin = d.find(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR', end + 1)
+            start = stop = cnt = 0
 
-    if begin == -1:
-        break
+            while True:
+                start = data.find(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR', stop)
 
-    end = d.find(b'IEND\xaeB`\x82', begin + 1)
+                if start == -1:
+                    break
 
-    cnt += 1
+                stop = data.find(b'IEND\xaeB`\x82', start + 1)
 
-    with open(f'{DIR}/{str(cnt).zfill(4)}.png', 'wb') as f:
-        f.write(d[begin:end])
+                cnt += 1
+
+                with open(f'{dir}/{str(cnt).zfill(4)}.png', 'wb') as f:
+                    f.write(data[start:stop])
